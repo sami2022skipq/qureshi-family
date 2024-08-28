@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL : "https://l0fzw4j5-3000.inc1.devtunnels.ms/api"
-})
+  baseURL: "https://quresh-family-5b06b2823b36.herokuapp.com/api",
+});
 
 export default API;
-
