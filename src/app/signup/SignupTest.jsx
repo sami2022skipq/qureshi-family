@@ -1,13 +1,10 @@
-"use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import API from "../axios";
-import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import API from "../../axios";
 
 function Signup() {
-  const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [signupInfo, setSignupInfo] = useState({
     email: "",
@@ -15,7 +12,8 @@ function Signup() {
     confirmPassword: "",
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({}); // to store error messages
+  const [passwordVisible, setPasswordVisible] = useState(false); // state for password visibility
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,9 +22,7 @@ function Signup() {
       [name]: value,
     });
   };
- const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+
   const validateForm = () => {
     let errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,20 +56,21 @@ function Signup() {
           password: signupInfo.password,
         });
         setSignupInfo({ email: "", password: "", confirmPassword: "" });
-          toast.success("SignUp successfully!");
-          console.log("Signup successful:", res.data);
-          router.push("/signin");
-        } catch (error) {
-        toast.error(`SignUp failed: ${error.response.data.message}`);
-        // toast.error("An error occurred. Please try again.");
+        navigate("/signup");
+        console.log("Signup successful:", res.data);
+      } catch (error) {
         console.error(
           "Error during signup:",
-          error.response ? error.response.data.message : error.message
+          error.response ? error.response.data : error.message
         );
       }
     } else {
       console.log("Form has errors");
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
@@ -120,7 +117,7 @@ function Signup() {
                   <div className="relative">
                     <input
                       onChange={handleChange}
-                      type={showPassword ? "text" : "password"}
+                      type={passwordVisible ? "text" : "password"}
                       name="password"
                       id="password"
                       placeholder="••••••••"
@@ -132,19 +129,15 @@ function Signup() {
                       onClick={togglePasswordVisibility}
                       className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
                     >
-                      {showPassword ? (
+                      {passwordVisible ? (
                         <FaEyeSlash className="text-gray-500" />
                       ) : (
                         <FaEye className="text-gray-500" />
                       )}
                     </div>
                   </div>
-                  {errors.password && (
-                    <p className="text-red-500 text-sm">
-                      {errors.password}
-                    </p>
-                  )}
                 </div>
+
                 {/* Confirm Password Input */}
                 <div>
                   <label
@@ -156,7 +149,7 @@ function Signup() {
                   <div className="relative">
                     <input
                       onChange={handleChange}
-                      type={showPassword ? "text" : "password"}
+                      type={passwordVisible ? "text" : "password"}
                       name="confirmPassword"
                       id="confirmPassword"
                       placeholder="••••••••"
@@ -168,18 +161,13 @@ function Signup() {
                       onClick={togglePasswordVisibility}
                       className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
                     >
-                      {showPassword ? (
+                      {passwordVisible ? (
                         <FaEyeSlash className="text-gray-500" />
                       ) : (
                         <FaEye className="text-gray-500" />
                       )}
                     </div>
                   </div>
-                  {errors.confirmPassword && (
-                    <p className="text-red-500 text-sm">
-                      {errors.confirmPassword}
-                    </p>
-                  )}
                 </div>
 
                 <button
@@ -192,7 +180,7 @@ function Signup() {
                   Already have an account?{" "}
                   <button
                     className="font-medium text-blue-600 hover:underline dark:text-primary-500"
-                    onClick={() => router.push("/signin")}
+                    onClick={() => navigate("/login")}
                   >
                     Login here
                   </button>
