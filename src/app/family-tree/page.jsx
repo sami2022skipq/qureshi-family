@@ -4,8 +4,6 @@ import { ReactDiagram } from "gojs-react";
 
 import "./App.css";
 import { familyData } from "../_assets/FamilyData";
-import { testData } from "../_assets/testData";
-import members from "@/app/_utils/getMembers";
 import { createLinkTemplate, createNodeTemplate } from "../helpers/tree-helper";
 
 function initDiagram() {

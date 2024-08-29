@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 // @ts-ignore
 import Logo from "../_assets/next.svg";
 import Image from "next/image";
-import { cn } from "@utils/cn";
 import links from "@/app/_links";
 import { useRouter } from "next/navigation";
 
@@ -35,13 +34,7 @@ function NavBar() {
 
   return (
     <nav className="flex h-14 items-center justify-between rounded border bg-white px-6 py-10 shadow-sm">
-      <div
-        className={cn(
-          "z-10 grid place-items-center rounded-full bg-white",
-
-          currentLocation === "/" && "left-8 top-8 lg:relative lg:h-40 lg:w-40"
-        )}
-      >
+      <div className={"z-10 grid place-items-center rounded-full bg-white"}>
         <Link href={"/"}>
           <Image
             src={Logo}
